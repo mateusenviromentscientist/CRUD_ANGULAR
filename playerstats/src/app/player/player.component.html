@@ -1,5 +1,19 @@
-<h1>{{titulo}}</h1>
-<ul>
-  <li *ngFor="let player of players">{{player.jogador}}
-  </li>
-</ul>
+<app-titulo [titulo]="titulo"></app-titulo>
+<br>
+<table class="table">
+  <thead class="thead-light">
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Nome</th>
+      <th scope="col">Clube</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let player of players">
+      <th scope="row">{{player.id}}   
+      </th>
+      <td>{{player.jogador}}</td>
+      <td>{{player.clube}}</td>      
+    </tr>
+  <tbody>
+</table>

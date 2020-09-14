@@ -2,14 +2,12 @@ import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'dashboard',
-  template: `
-   <p>
-  		dashboard Works!
-   </p>
-  `,
+  template: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent implements OnInit {
+
+  public titulo = 'titulo';
 
   constructor() { }
 

@@ -1,16 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
   selector: 'perfil',
-  template: `
-   <p>
-  		perfil Works!
-   </p>
-  `,
+  template: './perfil.component.html',
   styleUrls: ['./perfil.component.css']
 })
 export class PerfilComponent implements OnInit {
 
+  @Input() titulo : string;
   constructor() { }
 
   ngOnInit() {

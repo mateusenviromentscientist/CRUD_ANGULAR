@@ -6,15 +6,15 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./stats.component.css']
 })
 export class StatsComponent implements OnInit {
-
-  dados = 'estatísticas dos ganhadores da bola de ouro';
+  
+  public dados = 'estatísticas dos ganhadores da bola de ouro';
 
   public estatisticas = [
-    {stats:'72 gols e 30 assistencias'},
-    {stats:'53 gols e 20 assistencias'},
-    {stats:'15 gols e 3 assistencias'},
-    {stats:'20 gols e 10 assistencias'},
-    {stats:'20 gols e 10 assistencias'},
+    {id:1,stats:'72 gols e 30 assistencias',nacionalidade:'argentino'},
+    {id:2,stats:'53 gols e 20 assistencias',nacionalidade:'portugues'},
+    {id:3,stats:'15 gols e 3 assistencias',nacionalidade:'croata'},
+    {id:4,stats:'20 gols e 10 assistencias',nacionalidade:'frances'},
+    {id:5,stats:'20 gols e 10 assistencias',nacionalidade:'brasileiro'},
   ];
 
   constructor() { }

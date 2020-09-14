@@ -1,5 +1,20 @@
-<h1>{{dados}}</h1>
+<app-titulo [titulo]="dados"></app-titulo>
 <br>
-<ul>
-  <li *ngFor = "let jogador of estatisticas">{{jogador.stats}}</li>
-</ul>
+
+<table class="table">
+  <thead class="thead-light">
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">stats</th>
+      <th scope="col">nacionalidade</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let stats of estatisticas">
+      <th scope="row">{{stats.id}}   
+      </th>
+      <td>{{stats.stats}}</td>
+      <td>{{stats.nacionalidade}}</td>      
+    </tr>
+  </tbody>
+</table>
