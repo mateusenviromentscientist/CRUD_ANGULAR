@@ -1,19 +1,45 @@
-<app-titulo [titulo]="titulo"></app-titulo>
+<div class="row">
+  <div class="col-sm-6" *ngIf="playerSelecionado">
+    <div class="row">
+    <div class="mr-auto"><app-titulo [titulo]="'jogador:'+playerSelecionado.jogador"></app-titulo>
+    </div>     
+    <div class="mt-2"><button class="btn btn-outline-danger" (click)="voltar()">Fechar</button></div>
+    </div>  
 <br>
-<table class="table">
-  <thead class="thead-light">
-    <tr>
-      <th scope="col">#</th>
-      <th scope="col">Nome</th>
-      <th scope="col">Clube</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let player of players">
-      <th scope="row">{{player.id}}   
-      </th>
-      <td>{{player.jogador}}</td>
-      <td>{{player.clube}}</td>      
-    </tr>
-  <tbody>
-</table>
+<form>
+  <div class="form-group">
+    <label for="formGroupExampleInput">Jogador</label>
+    <input type="text" value="{{playerSelecionado.jogador}}" class="form-control">
+  </div>
+  <div class="form-group">
+    <label for="formGroupExampleInput2">Clube</label>
+    <input type="text" value="{{playerSelecionado.clube}}" class="form-control">
+  </div>
+  <div class="form-group">
+    <hr>
+    <button class="btn btn-success">Salvar</button>
+  </div>
+</form>
+</div>
+
+<div [ngClass]="{'col-sm-6':playerSelecionado,'col-sm-12': !playerSelecionado}">
+  <app-titulo [titulo]="titulo"></app-titulo>
+  <table class="table table-hover">
+    <thead class="thead-light">
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Nome</th>
+        <th scope="col">Clube</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let player of players" style="cursor: pointer;" (click)="playerSelect(player)">
+        <th scope="row">{{player.id}}   
+        </th>
+        <td>{{player.jogador}}</td>
+        <td>{{player.clube}}</td>      
+      </tr>
+    <tbody>
+  </table>
+</div>
+

@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { Player } from '../models/player';
 
 @Component({
   selector: 'player',
@@ -8,6 +9,7 @@ import { Component, Input, OnInit } from '@angular/core';
 export class PlayerComponent implements OnInit {
 
   public titulo = 'jogadores ganhadores da bola de ouro';
+  public playerSelecionado: Player;
   
   public players = [
    {id:1,jogador:'Messi',clube:'Barcelona'},
@@ -16,6 +18,15 @@ export class PlayerComponent implements OnInit {
    {id:4,jogador:'Zidane',clube:'Real Madrid'},
    {id:5,jogador:'Ronaldo',clube:'Internazonale'},
   ];
+
+  playerSelect(player:Player){
+    this.playerSelecionado=player;
+  }
+
+  voltar(){
+    this.playerSelecionado= null;
+  }
+
   constructor() { }
 
   ngOnInit() {

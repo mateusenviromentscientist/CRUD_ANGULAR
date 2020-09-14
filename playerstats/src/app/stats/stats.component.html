@@ -1,7 +1,5 @@
-<app-titulo [titulo]="dados"></app-titulo>
-<br>
 
-<table class="table">
+<table class="table table-hover">
   <thead class="thead-light">
     <tr>
       <th scope="col">#</th>
@@ -10,7 +8,7 @@
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let stats of estatisticas">
+    <tr *ngFor="let stats of estatisticas" style="cursor: pointer;" (click)="estatisticaSelecionada()">
       <th scope="row">{{stats.id}}   
       </th>
       <td>{{stats.stats}}</td>

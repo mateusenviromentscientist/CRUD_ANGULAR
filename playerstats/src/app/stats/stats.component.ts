@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Stat } from '../models/stat';
 
 @Component({
   selector: 'stats',
@@ -8,7 +9,7 @@ import { Component, OnInit } from '@angular/core';
 export class StatsComponent implements OnInit {
   
   public dados = 'estatísticas dos ganhadores da bola de ouro';
-
+  public estatSelecionada : Stat;
   public estatisticas = [
     {id:1,stats:'72 gols e 30 assistencias',nacionalidade:'argentino'},
     {id:2,stats:'53 gols e 20 assistencias',nacionalidade:'portugues'},
@@ -17,6 +18,14 @@ export class StatsComponent implements OnInit {
     {id:5,stats:'20 gols e 10 assistencias',nacionalidade:'brasileiro'},
   ];
 
+  estatisticaSelecionada(stat:Stat){
+    this.estatSelecionada = stat;
+    
+  }
+
+  voltar(){
+    this.estatSelecionada= null;
+  }
   constructor() { }
 
   ngOnInit() {
