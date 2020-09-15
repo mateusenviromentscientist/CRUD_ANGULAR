@@ -1,5 +1,8 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, TemplateRef } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { Player } from '../models/player';
+
 
 @Component({
   selector: 'player',
@@ -7,9 +10,12 @@ import { Player } from '../models/player';
   styleUrls: ['./player.component.css']
 })
 export class PlayerComponent implements OnInit {
-
+  
+  public modalRef:BsModalRef;
+  public playerForm : FormGroup;
   public titulo = 'jogadores ganhadores da bola de ouro';
   public playerSelecionado: Player;
+  public textSimple:string;
   
   public players = [
    {id:1,jogador:'Messi',clube:'Barcelona'},
@@ -19,17 +25,36 @@ export class PlayerComponent implements OnInit {
    {id:5,jogador:'Ronaldo',clube:'Internazonale'},
   ];
 
+  
+  openModal(template:TemplateRef<any>){
+    this.modalRef = this.modalService.show(template);
+  }
+  
+  constructor(private fb: FormBuilder, private modalService: BsModalService){
+    this.criarForm();
+  }
+
+  ngOnInit() {
+  }
+
+  criarForm(){
+    this.playerForm= this.fb.group({
+      jogador: ['', Validators.required],
+      clube: ['', Validators.required]
+    });
+  }
+  
+  playerSubmit(){
+    console.log(this.playerForm.value);
+  }
+  
   playerSelect(player:Player){
     this.playerSelecionado=player;
+    this.playerForm.patchValue(player);
   }
 
   voltar(){
     this.playerSelecionado= null;
-  }
-
-  constructor() { }
-
-  ngOnInit() {
   }
 
 }

@@ -1,45 +1,66 @@
 <div class="row">
+  
+  
   <div class="col-sm-6" *ngIf="playerSelecionado">
     <div class="row">
-    <div class="mr-auto"><app-titulo [titulo]="'jogador:'+playerSelecionado.jogador"></app-titulo>
-    </div>     
-    <div class="mt-2"><button class="btn btn-outline-danger" (click)="voltar()">Fechar</button></div>
+      <div class="mr-auto"><app-titulo [titulo]="'jogador:'+playerSelecionado.jogador"></app-titulo>
+      </div>     
+      <div class="mt-1"><button class=" btn btn-sm btn-outline-danger" (click)="voltar()">Fechar</button></div>
     </div>  
-<br>
-<form>
-  <div class="form-group">
-    <label for="formGroupExampleInput">Jogador</label>
-    <input type="text" value="{{playerSelecionado.jogador}}" class="form-control">
+    
+    <form [formGroup]="playerForm"(submit)="playerSubmit()">
+      <div class="form-group">
+        <label for="formGroupExampleInput">Jogador</label>
+        <input type="text" formControlName="jogador"  class="form-control">
+      </div>
+      <div class="form-group">
+        <label for="formGroupExampleInput2">Clube</label>
+        <input type="text" formControlName="clube" class="form-control">
+      </div>
+      <div class="form-group">
+        <hr>
+        <button class="btn btn-success" [disabled]="!playerForm.valid">Salvar</button>
+      </div>
+    </form>
   </div>
-  <div class="form-group">
-    <label for="formGroupExampleInput2">Clube</label>
-    <input type="text" value="{{playerSelecionado.clube}}" class="form-control">
-  </div>
-  <div class="form-group">
-    <hr>
-    <button class="btn btn-success">Salvar</button>
-  </div>
-</form>
+  
+  <div [ngClass]="{'col-sm-6':playerSelecionado,'col-sm-12': !playerSelecionado}">
+    <app-titulo [titulo]="titulo"></app-titulo>
+    <table class="table table-hover">
+      <thead class="thead-light">
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Nome</th>
+          <th scope="col">Clube</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let player of players" style="cursor: pointer;" (click)="playerSelect(player)">
+          <th scope="row">{{player.id}}   
+          </th>
+          <td>{{player.jogador}}</td>
+          <td>{{player.clube}}</td>   
+          <td>
+            <div class="btn-group">
+              <button (click)="openModal(template)" class="btn btn-sm btn-outline-primary">stats</button>
+              <button class="btn btn-sm btn-outline-primary">Editar</button>
+              <button class="btn btn-sm btn-outline-danger">Excluir</button>
+            </div>
+          </td>   
+        </tr>
+        <tbody>
+   </table>
 </div>
-
-<div [ngClass]="{'col-sm-6':playerSelecionado,'col-sm-12': !playerSelecionado}">
-  <app-titulo [titulo]="titulo"></app-titulo>
-  <table class="table table-hover">
-    <thead class="thead-light">
-      <tr>
-        <th scope="col">#</th>
-        <th scope="col">Nome</th>
-        <th scope="col">Clube</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let player of players" style="cursor: pointer;" (click)="playerSelect(player)">
-        <th scope="row">{{player.id}}   
-        </th>
-        <td>{{player.jogador}}</td>
-        <td>{{player.clube}}</td>      
-      </tr>
-    <tbody>
-  </table>
-</div>
-
+ 
+<ng-template #template>
+  
+  <div class="modal-body">
+    <stats></stats>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn pull right" aria-label="Close" 
+    (click)="modalRef.hide()">Fechar</button>
+  </div>
+</ng-template>
+      
+      
