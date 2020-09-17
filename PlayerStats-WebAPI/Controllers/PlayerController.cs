@@ -1,26 +1,96 @@
 using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
-namespace PlayerStats_WebAPI{
+namespace PlayerStats_WebAPI
+{
 
 
-    [ApiController]
-    [Route("api/[controller]")]
-    public class PlayerController: ControllerBase {
-         
-         
+    [Route("players")]
+
+    public class PlayerController: ControllerBase 
+    {
         [HttpGet]
-        public IActionResult Get(){
+        [Route("")]
+        public async Task<ActionResult<List<Player>>> Get([FromServices] DataContext context)
+        {
+            var players = await context.Players.AsNoTracking().ToListAsync();
+            return Ok(players);
+        }
+
+        [HttpGet]
+        [Route("{id:int}")]
+        public async Task<ActionResult<Player>> GetById (int id, [FromServices]DataContext context)
+        {
+            var player = await context.Players.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
+            return Ok(player);
+        }
+    
+        [HttpPost]
+        [Route("")]
+        public async Task<ActionResult<List<Player>>> Post([FromBody] Player model, [FromServices]DataContext context){
+           if (!ModelState.IsValid)
+                return BadRequest(ModelState);
             try
             {
-                return Ok("");
+                context.Players.Add(model);
+                await context.SaveChangesAsync();
+                return Ok (model);
             }
-            catch (Exception ex)
+            catch
             {
-            return BadRequest($"Erro: {ex.Message}");
+                return BadRequest(new { message = "Isnt possible return your player"});
+            }
+                       
+        }
+
+        [HttpPut]
+        [Route("{id:int}")]
+        public async Task<ActionResult<List<Player>>> Put(int id, [FromBody] Player model, [FromServices] DataContext context){
+            if(id != model.Id)
+                return NotFound(new {message = "Player not Found"});
+            
+            if(!ModelState.IsValid)
+            return BadRequest(ModelState);
+            try
+            {
+                context.Entry<Player>(model).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+                await context.SaveChangesAsync();
+                return Ok (model);
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                return BadRequest(new {message ="this players was update already"});
+            }
+            catch (Exception)
+            {
+                return BadRequest(new{message="isn't possible patch the player "});
             }
             
         }
 
+        [HttpDelete]
+        [Route("{id:int}")]
+        public async Task<ActionResult<List<Player>>> Delete(int id, [FromServices]DataContext context)
+        {
+            var player = await context.Players.FirstOrDefaultAsync(x => x.Id == id);
+            if(player == null)
+            return NotFound(new {message = "player not Found"});
+
+            try
+            {
+                context.Players.Remove(player);
+                await context.SaveChangesAsync();
+                return Ok(player);
+            }
+            catch (Exception)
+            {
+                return BadRequest(new {message="isn't possible remove the player"});
+            }
+        }
+        
+                
     }
 }
