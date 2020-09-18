@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,6 +15,7 @@ namespace PlayerStats_WebAPI{
 
         [HttpGet]
         [Route("")]
+        [AllowAnonymous]
         public async Task<ActionResult<List<Stat>>> Get([FromServices] DataContext context)
         {
             var stats = await context.Stats.Include(x=> x.Player).AsNoTracking().ToListAsync();
@@ -22,6 +24,7 @@ namespace PlayerStats_WebAPI{
 
         [HttpGet]
         [Route("{id:int}")]
+        [AllowAnonymous]
         public async Task<ActionResult<List<Stat>>> Get(int id,[FromServices] DataContext context)
         {
             var stats = await context.Stats.Include(x=> x.Player).AsNoTracking().FirstOrDefaultAsync(x=> x.Id == id);
@@ -30,6 +33,7 @@ namespace PlayerStats_WebAPI{
 
         [HttpGet]
         [Route("stats/{id:int}")]
+        [Authorize(Roles="admin")]
         public async Task<ActionResult<List<Stat>>> GetByStats(int id,[FromServices] DataContext context)
         {
             var stats = await context.Stats.Include(x=> x.Player).AsNoTracking().Where(x=> x.PlayerId == id).ToListAsync();
@@ -38,6 +42,7 @@ namespace PlayerStats_WebAPI{
 
         [HttpPost]
         [Route("")]
+        [Authorize(Roles="admin")]
         public async Task<ActionResult<List<Stat>>> Post([FromServices]DataContext context, [FromBody] Stat model)
         {
             if(ModelState.IsValid)

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -8,12 +9,13 @@ namespace PlayerStats_WebAPI
 {
 
 
-    [Route("players")]
-
+    [Route("v1/players")]
     public class PlayerController: ControllerBase 
     {
         [HttpGet]
         [Route("")]
+        [AllowAnonymous]
+        [ResponseCache(VaryByHeader="User-Agent", Location = ResponseCacheLocation.Any, Duration = 30)]
         public async Task<ActionResult<List<Player>>> Get([FromServices] DataContext context)
         {
             var players = await context.Players.AsNoTracking().ToListAsync();
@@ -22,6 +24,7 @@ namespace PlayerStats_WebAPI
 
         [HttpGet]
         [Route("{id:int}")]
+        [AllowAnonymous]
         public async Task<ActionResult<Player>> GetById (int id, [FromServices]DataContext context)
         {
             var player = await context.Players.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
@@ -30,6 +33,7 @@ namespace PlayerStats_WebAPI
     
         [HttpPost]
         [Route("")]
+        [Authorize(Roles="admin")]
         public async Task<ActionResult<List<Player>>> Post([FromBody] Player model, [FromServices]DataContext context){
            if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -48,6 +52,7 @@ namespace PlayerStats_WebAPI
 
         [HttpPut]
         [Route("{id:int}")]
+        [Authorize(Roles="admin")]
         public async Task<ActionResult<List<Player>>> Put(int id, [FromBody] Player model, [FromServices] DataContext context){
             if(id != model.Id)
                 return NotFound(new {message = "Player not Found"});
@@ -73,6 +78,7 @@ namespace PlayerStats_WebAPI
 
         [HttpDelete]
         [Route("{id:int}")]
+        [Authorize(Roles="admin")]
         public async Task<ActionResult<List<Player>>> Delete(int id, [FromServices]DataContext context)
         {
             var player = await context.Players.FirstOrDefaultAsync(x => x.Id == id);
