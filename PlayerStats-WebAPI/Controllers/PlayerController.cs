@@ -33,7 +33,7 @@ namespace PlayerStats_WebAPI
     
         [HttpPost]
         [Route("")]
-        [Authorize(Roles="admin")]
+        [AllowAnonymous]
         public async Task<ActionResult<List<Player>>> Post([FromBody] Player model, [FromServices]DataContext context){
            if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -52,7 +52,7 @@ namespace PlayerStats_WebAPI
 
         [HttpPut]
         [Route("{id:int}")]
-        [Authorize(Roles="admin")]
+        [AllowAnonymous]
         public async Task<ActionResult<List<Player>>> Put(int id, [FromBody] Player model, [FromServices] DataContext context){
             if(id != model.Id)
                 return NotFound(new {message = "Player not Found"});
@@ -78,7 +78,7 @@ namespace PlayerStats_WebAPI
 
         [HttpDelete]
         [Route("{id:int}")]
-        [Authorize(Roles="admin")]
+        [AllowAnonymous]
         public async Task<ActionResult<List<Player>>> Delete(int id, [FromServices]DataContext context)
         {
             var player = await context.Players.FirstOrDefaultAsync(x => x.Id == id);

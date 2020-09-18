@@ -33,7 +33,7 @@ namespace PlayerStats_WebAPI{
 
         [HttpGet]
         [Route("stats/{id:int}")]
-        [Authorize(Roles="admin")]
+        [AllowAnonymous]
         public async Task<ActionResult<List<Stat>>> GetByStats(int id,[FromServices] DataContext context)
         {
             var stats = await context.Stats.Include(x=> x.Player).AsNoTracking().Where(x=> x.PlayerId == id).ToListAsync();
@@ -42,7 +42,7 @@ namespace PlayerStats_WebAPI{
 
         [HttpPost]
         [Route("")]
-        [Authorize(Roles="admin")]
+        [AllowAnonymous]
         public async Task<ActionResult<List<Stat>>> Post([FromServices]DataContext context, [FromBody] Stat model)
         {
             if(ModelState.IsValid)
