@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\dev\\Angular\\CRUD_ANGULAR\\PlayerStats-WebAPI\\PlayerStats-WebAPI.csproj": {}
+    "C:\\dev\\angular\\CRUD_ANGULAR\\PlayerStats-WebAPI\\PlayerStats-WebAPI.csproj": {}
   },
   "projects": {
-    "C:\\dev\\Angular\\CRUD_ANGULAR\\PlayerStats-WebAPI\\PlayerStats-WebAPI.csproj": {
+    "C:\\dev\\angular\\CRUD_ANGULAR\\PlayerStats-WebAPI\\PlayerStats-WebAPI.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\dev\\Angular\\CRUD_ANGULAR\\PlayerStats-WebAPI\\PlayerStats-WebAPI.csproj",
+        "projectUniqueName": "C:\\dev\\angular\\CRUD_ANGULAR\\PlayerStats-WebAPI\\PlayerStats-WebAPI.csproj",
         "projectName": "PlayerStats-WebAPI",
-        "projectPath": "C:\\dev\\Angular\\CRUD_ANGULAR\\PlayerStats-WebAPI\\PlayerStats-WebAPI.csproj",
+        "projectPath": "C:\\dev\\angular\\CRUD_ANGULAR\\PlayerStats-WebAPI\\PlayerStats-WebAPI.csproj",
         "packagesPath": "C:\\Users\\mateus_santos\\.nuget\\packages\\",
-        "outputPath": "C:\\dev\\Angular\\CRUD_ANGULAR\\PlayerStats-WebAPI\\obj\\",
+        "outputPath": "C:\\dev\\angular\\CRUD_ANGULAR\\PlayerStats-WebAPI\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\mateus_santos\\AppData\\Roaming\\NuGet\\NuGet.Config",

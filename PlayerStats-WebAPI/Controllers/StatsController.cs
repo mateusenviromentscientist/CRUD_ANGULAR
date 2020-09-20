@@ -31,7 +31,7 @@ namespace PlayerStats_WebAPI{
             return Ok (stats);
         }
 
-        [HttpGet]
+        [HttpPut]
         [Route("stats/{id:int}")]
         [AllowAnonymous]
         public async Task<ActionResult<List<Stat>>> GetByStats(int id,[FromServices] DataContext context)
