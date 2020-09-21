@@ -1,34 +1,69 @@
-import { Component, OnInit } from '@angular/core';
-import { Stat } from '../models/stat';
+import { Component, OnInit, TemplateRef } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { Stats } from '../models/Stat';
+import { StatService } from './stats.service';
 
 @Component({
   selector: 'stats',
   templateUrl: './stats.component.html',
   styleUrls: ['./stats.component.css']
 })
-export class StatsComponent implements OnInit {
+ export class StatsComponent implements OnInit {
   
-  public dados = 'estatísticas dos ganhadores da bola de ouro';
-  public estatSelecionada : Stat;
-  public estatisticas = [
-    {id:1,stats:'72 gols e 30 assistencias',nacionalidade:'argentino'},
-    {id:2,stats:'53 gols e 20 assistencias',nacionalidade:'portugues'},
-    {id:3,stats:'15 gols e 3 assistencias',nacionalidade:'croata'},
-    {id:4,stats:'20 gols e 10 assistencias',nacionalidade:'frances'},
-    {id:5,stats:'20 gols e 10 assistencias',nacionalidade:'brasileiro'},
-  ];
+  public modalRef: BsModalRef;
+  public titulo = 'Stats';
+  public statSelecionada = Stats;
+  public statForm: FormGroup;
+  
+  public Stats : Stats[];
 
-  estatisticaSelecionada(stat:Stat){
-    this.estatSelecionada = stat;
-    
-  }
+  constructor(
+    private fb: FormBuilder,private modalService: BsModalService,
+    private statService: StatService) {
+      this.StatsForm();
+    }
 
-  voltar(){
-    this.estatSelecionada= null;
-  }
-  constructor() { }
+    openModal(tempalte:TemplateRef<any>){
+      this.modalRef = this.modalService.show(tempalte);
+    }
+
+  
 
   ngOnInit() {
+    this.carregarStat();
+  }
+
+  StatsForm(){
+    this.statForm= this.fb.group({
+      id :[''],
+      estatistica:['', Validators.required],
+      clube: ['', Validators.required],
+      ano : ['', Validators.required]
+    });
+  }
+
+  salvarStats(stats: Stats){
+    this.statService.put(stats.id, stats).subscribe((stats : Stats)=>{console.log(Stats)},
+    (erro:any)=>{console.log(erro)});
+   }
+   playerSubmit(){
+     this.salvarStats(this.statForm.value);
+   };
+   
+
+  statSubmit(){
+    console.log(this.statForm.value);
+  }
+
+  statSelect(stats: Stats){
+    this.statSelecionada = Stats;
+    this.statForm.patchValue(stats);
+  }
+
+  carregarStat(){
+    this.statService.getAll().subscribe((stats:Stats[])=>{this.Stats = stats},
+    (erro: any)=>{console.error(erro)})
   }
 
 }

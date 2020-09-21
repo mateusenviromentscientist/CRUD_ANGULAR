@@ -2,6 +2,7 @@ import { Component, Input, OnInit, TemplateRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { Player } from '../models/player';
+import { PlayerService } from './player.service';
 
 
 @Component({
@@ -16,41 +17,69 @@ export class PlayerComponent implements OnInit {
   public titulo = 'jogadores ganhadores da bola de ouro';
   public playerSelecionado: Player;
   public textSimple:string;
+  public modo = 'post';
   
-  public players = [
-   {id:1,jogador:'Messi',clube:'Barcelona'},
-   {id:2,jogador:'CR7',clube:'Real Madrid'},
-   {id:3,jogador:'Modric',clube:'Real Madrid'},
-   {id:4,jogador:'Zidane',clube:'Real Madrid'},
-   {id:5,jogador:'Ronaldo',clube:'Internazonale'},
-  ];
-
-  
+  public players : Player[];
   openModal(template:TemplateRef<any>){
     this.modalRef = this.modalService.show(template);
   }
   
-  constructor(private fb: FormBuilder, private modalService: BsModalService){
+  constructor(private fb: FormBuilder, private modalService: BsModalService,
+    private playerService:PlayerService){
     this.criarForm();
   }
 
   ngOnInit() {
+    this.carregarPlayers();
+  }
+
+   carregarPlayers(){
+   this.playerService.getAll().subscribe((players: Player[])=>{
+   this.players = players;
+   },
+   (erro:any) =>{
+    console.error(erro)
+   }
+   );
   }
 
   criarForm(){
     this.playerForm= this.fb.group({
-      jogador: ['', Validators.required],
-      clube: ['', Validators.required]
+      id :[''],
+      player: ['', Validators.required],
     });
   }
-  
-  playerSubmit(){
-    console.log(this.playerForm.value);
+
+  salvarPlayer(player: Player){
+    if (player.id === 0) this.modo = 'post';
+    else{
+      this.modo = 'put';
+    }
+   this.playerService[this.modo](player).subscribe((player:Player)=>{console.log(Player);
+   this.carregarPlayers()},
+   (erro:any)=>{console.log(erro)});
   }
+  playerSubmit(){
+    this.salvarPlayer(this.playerForm.value);
+  };
+  
+  deletarPlayer(id: number){
+    this.playerService.delete(id).subscribe((model)=>{console.log(model);
+    this.carregarPlayers();},
+    (erro:any)=>{
+      console.log(erro);
+    })
+  }
+  
   
   playerSelect(player:Player){
     this.playerSelecionado=player;
     this.playerForm.patchValue(player);
+  }
+
+  playerNovo(){
+    this.playerSelecionado = new Player();
+    this.playerForm.patchValue(this.playerSelecionado);
   }
 
   voltar(){
